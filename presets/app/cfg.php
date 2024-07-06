@@ -12,9 +12,9 @@ const FAA_CERT_VALIDATION_ACTIVE = false;
 
 // import all the handlers and objects
 require_once 'vendor/autoload.php';
-require_once 'objects/request.php';
-require_once 'handler/pdf.php';
-require_once 'service/functions.php';
+require_once 'src/objects/request.php';
+require_once 'src/handler/pdf.php';
+require_once 'src/service/functions.php';
 
 $src = __DIR__ . '/requests.json';
 $psrc = __DIR__ . '/requests.php';

@@ -1,2 +1,4 @@
 /sample.json
 /.idea/
+/presets/app/vendor/
+/presets/app/composer.lock
