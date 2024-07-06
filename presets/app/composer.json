@@ -1,7 +1,8 @@
 {
-  "require" : {
-    "spatie/pdf-to-text": "^1.4"
-  },
+    "require": {
+        "spatie/pdf-to-text": "^1.4",
+        "softwarefactories/andromeda.core": "^1.6.6"
+    },
     "name": "file-access/pdf-service",
-    "description": ""
+    "description": "Provide a simple interface to manage pdf document generation from html"
 }

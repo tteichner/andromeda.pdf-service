@@ -6,15 +6,13 @@ error_reporting(E_ALL);
 date_default_timezone_set('UTC');
 
 // system constant definitions
-define('FAA_PATHS_ROOT_ABS', '/var/www/storage');
-define('FAA_MASTER_PASSWORD', '23c8d367124f1ef55f07624790e7809e');
-define('FAA_CERT_VALIDATION_ACTIVE', false);
+const FAA_PATHS_ROOT_ABS = '/var/www/storage';
+const FAA_MASTER_PASSWORD = '23c8d367124f1ef55f07624790e7809e';
+const FAA_CERT_VALIDATION_ACTIVE = false;
 
 // import all the handlers and objects
 require_once 'vendor/autoload.php';
-require_once 'interface/handler.php';
 require_once 'objects/request.php';
-require_once 'objects/result.php';
 require_once 'handler/pdf.php';
 require_once 'service/functions.php';
 

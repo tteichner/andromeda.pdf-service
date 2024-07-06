@@ -1,8 +1,9 @@
 <?php
 namespace FAA\Handler;
 use FAA\HttpFunctions;
-use FAA\Interfaces\IHandler;
-use FAA\Objects\{Request, Result};
+use Softwarefactories\AndromedaCore\Int\IHandler;
+use Softwarefactories\AndromedaCore\Obj\Request;
+use Softwarefactories\AndromedaCore\Obj\SimpleResponse;
 
 /**
  * Class FileParser
@@ -11,31 +12,22 @@ use FAA\Objects\{Request, Result};
  */
 class Pdf implements IHandler
 {
-    /**
-     * The request context
-     *
-     * @var Request
-     */
-    private $request;
 
-    /**
-     * Derivative constructor.
-     *
-     * @param Request $request
-     */
+    private Request $request;
+
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
-    public function Name()
+    public function Name(): string
     {
         return 'Pdf';
     }
 
-    public function Execute(): Result
+    public function Execute(): SimpleResponse
     {
-        $res = new Result();
+        $res = new SimpleResponse();
         if ($this->request->CallBack() === 'Html2Pdf') {
             $res = $this->Html2Pdf();
         } else {
@@ -47,11 +39,11 @@ class Pdf implements IHandler
     /**
      * Convert an email to json and return the result
      *
-     * @return Result
+     * @return SimpleResponse
      */
-    private function Html2Pdf(): Result
+    private function Html2Pdf(): SimpleResponse
     {
-        $res = new Result();
+        $res = new SimpleResponse();
         $body = HttpFunctions::GetBody();
         if (isset($body['content']) && $body['content']) {
             // Prepare som source and target variables with paths
@@ -72,7 +64,7 @@ class Pdf implements IHandler
                         $res->code = 201;
                         $res->type = 'application/pdf';
                         $res->msg = file_get_contents($out);
-                        $res->isDownload = true;
+                        $res->isFile = true;
 
                         // Clear the folder and return true
                         unlink($in);

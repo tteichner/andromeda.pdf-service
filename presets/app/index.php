@@ -37,7 +37,7 @@ if ($handler = $request->Handler()) {
         // handle and sent the response
         $res = $handler->Execute();
         HttpFunctions::SetResponseCode($res->code);
-        if ($res->isDownload) {
+        if ($res->isFile) {
             // Mark as attachment
             header('Content-Disposition: attachment; filename=out.'.preg_replace('#^.*/#', '', $res->type).';');
             header('Content-Transfer-Encoding: binary');
