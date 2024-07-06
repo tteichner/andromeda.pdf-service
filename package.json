@@ -7,11 +7,11 @@
         "url": "https://github.com/tteichner/andromeda.pdf-service"
     },
     "scripts": {
-        "release": "cicd.sh release",
-        "prerelease": "chmod a+x .scripts/release.sh",
-        "release:major": "cicd.sh release --major",
-        "prerelease:major": "chmod a+x .scripts/release.sh",
-        "release:patch": "cicd.sh release --patch",
-        "prerelease:patch": "chmod a+x .scripts/release.sh"
+        "release": "./cicd.sh release",
+        "prerelease": "chmod a+x cicd.sh",
+        "release:major": "./cicd.sh release --major",
+        "prerelease:major": "chmod a+x cicd.sh",
+        "release:patch": "./cicd.sh release --patch",
+        "prerelease:patch": "chmod a+x cicd.sh"
     }
 }
