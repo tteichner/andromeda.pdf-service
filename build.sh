@@ -5,4 +5,4 @@ set -e
 git_tag="softwarefactories/pdf-service:$1"
 
 # build image
-sudo docker build -t "$git_tag" -f Dockerfile .
+docker build -t "$git_tag" -f Dockerfile .
