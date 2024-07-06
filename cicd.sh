@@ -1,20 +1,25 @@
 #!/bin/bash
 set -e
 
-# get the latest git version tag if none was given
-if [[ -z ${git_tag} ]] ; then
-    git_tag=$(git for-each-ref refs/tags/v* --sort=-taggerdate --format='%(refname)' --count=1)
-    git_tag=$(echo ${git_tag} | sed -e 's/refs\/tags\/v//g')
-    if [[ -z ${git_tag} ]] ; then
-        echo "Could not find version, stop build process"
-        exit 1
-    fi
-fi
-
 # route
-if [[ "x$1" == "xbuild" ]] ; then
-  # simple build
-  ./build.sh "$git_tag"
+if [[ "x$1" == "xbuild" || "x$1" == "xrun" ]] ; then
+  # get the latest git version tag if none was given
+  if [[ -z ${git_tag} ]] ; then
+      git_tag=$(git for-each-ref refs/tags/v* --sort=-taggerdate --format='%(refname)' --count=1)
+      git_tag=$(echo ${git_tag} | sed -e 's/refs\/tags\/v//g')
+      if [[ -z ${git_tag} ]] ; then
+          echo "Could not find version, stop build process"
+          exit 1
+      fi
+  fi
+
+  if [[ "x$1" == "xbuild" ]] ; then
+    # simple build
+    ./build.sh "$git_tag"
+  elif [[ "x$1" == "xstart" ]] ; then
+    # start locally
+    ./run.sh "$git_tag"
+  fi
 elif [[ "x$1" == "xrelease" ]] ; then
   # Can be all 3 kinds of releases
   patch=0
@@ -129,6 +134,17 @@ elif [[ "x$1" == "xrelease" ]] ; then
     fi
     git push --tags
 
+    # docker deploy
+    name=$(cat ~/docker-username.txt)
+    name=$(echo "$name" | xargs)
+    echo "Login to docker hub"
+    cat ~/docker-password.txt | docker login --username ${name} --password-stdin
+    app='pdf-service'
+    id=$(docker images "softwarefactories/$app:$tag" -q)
+    echo "Tag and release image $app ($id) in version $tag"
+    docker tag "$id" "$tag"
+    docker push "softwarefactories/$app:$tag"
+
     # go ack to develop
     if [[ "x$patch" != "x1" ]] ; then
         git checkout develop
@@ -137,6 +153,4 @@ elif [[ "x$1" == "xrelease" ]] ; then
     echo "ERROR: Repo is in conflict"
     exit 1
   fi
-elif [[ "x$1" == "xstart" ]] ; then
-  ./run.sh "$git_tag"
 fi

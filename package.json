@@ -1,17 +1,17 @@
 {
     "name": "andromeda.core",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "license": "GPL-3.0-or-later",
     "repository": {
         "type": "git",
         "url": "https://github.com/tteichner/andromeda.pdf-service"
     },
     "scripts": {
-        "release": "cicd.sh release",
-        "prerelease": "chmod a+x .scripts/release.sh",
-        "release:major": "cicd.sh release --major",
-        "prerelease:major": "chmod a+x .scripts/release.sh",
-        "release:patch": "cicd.sh release --patch",
-        "prerelease:patch": "chmod a+x .scripts/release.sh"
+        "release": "./cicd.sh release",
+        "prerelease": "chmod a+x cicd.sh",
+        "release:major": "./cicd.sh release --major",
+        "prerelease:major": "chmod a+x cicd.sh",
+        "release:patch": "./cicd.sh release --patch",
+        "prerelease:patch": "chmod a+x cicd.sh"
     }
 }
