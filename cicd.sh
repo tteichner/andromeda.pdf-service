@@ -140,10 +140,12 @@ elif [[ "x$1" == "xrelease" ]] ; then
     echo "Login to docker hub"
     cat ~/docker-password.txt | docker login --username ${name} --password-stdin
     app='pdf-service'
+    chmod a+x build.sh
+    ./build.sg "$tag"
     id=$(docker images "softwarefactories/$app:$tag" -q)
     echo "Tag and release image $app ($id) in version $tag"
-    docker tag "$id" "$tag"
-    docker push "softwarefactories/$app:$tag"
+    sudo docker tag "$id" "$tag"
+    sudo docker push "softwarefactories/$app:$tag"
 
     # go ack to develop
     if [[ "x$patch" != "x1" ]] ; then
