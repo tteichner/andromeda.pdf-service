@@ -140,8 +140,7 @@ elif [[ "x$1" == "xrelease" ]] ; then
     echo "Login to docker hub"
     cat ~/docker-password.txt | docker login --username ${name} --password-stdin
     app='pdf-service'
-    chmod a+x build.sh
-    ./build.sg "$tag"
+    chmod a+x build.sh && ./build.sh "$tag"
     id=$(docker images "softwarefactories/$app:$tag" -q)
     echo "Tag and release image $app ($id) in version $tag"
     sudo docker tag "$id" "$tag"
