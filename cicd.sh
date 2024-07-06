@@ -143,8 +143,8 @@ elif [[ "x$1" == "xrelease" ]] ; then
     chmod a+x build.sh && ./build.sh "$tag"
     id=$(docker images "softwarefactories/$app:$tag" -q)
     echo "Tag and release image $app ($id) in version $tag"
-    sudo docker tag "$id" "$tag"
-    sudo docker push "softwarefactories/$app:$tag"
+    docker tag "$id" "$tag"
+    docker push "softwarefactories/$app:$tag"
 
     # go ack to develop
     if [[ "x$patch" != "x1" ]] ; then
