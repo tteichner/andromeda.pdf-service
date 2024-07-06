@@ -129,6 +129,17 @@ elif [[ "x$1" == "xrelease" ]] ; then
     fi
     git push --tags
 
+    # docker deploy
+    name=$(cat ~/docker-username.txt)
+    name=$(echo "$name" | xargs)
+    echo "Login to docker hub"
+    cat ~/docker-password.txt | docker login --username ${name} --password-stdin
+    app='pdf-service'
+    id=$(docker images "softwarefactories/$app:$tag" -q)
+    echo "Tag and release image $app ($id) in version $tag"
+    docker tag "$id" "$tag"
+    docker push "softwarefactories/$app:$tag"
+
     # go ack to develop
     if [[ "x$patch" != "x1" ]] ; then
         git checkout develop
