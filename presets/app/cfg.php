@@ -7,7 +7,7 @@ date_default_timezone_set('UTC');
 
 // system constant definitions
 const FAA_PATHS_ROOT_ABS = '/var/www/storage';
-const FAA_MASTER_PASSWORD = '23c8d367124f1ef55f07624790e7809e';
+define("FAA_MASTER_PASSWORD", $_ENV['FAA_PDF_SERVICE_PASS']);
 const FAA_CERT_VALIDATION_ACTIVE = false;
 
 // import all the handlers and objects

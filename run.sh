@@ -37,5 +37,6 @@ chmod 777 /var/log/docker-images/pdf-service -R
 # start container
 echo "Starting $image"
 docker run --name pdf-service.local \
-           --volume=/var/log/docker-images/pdf-service:/var/log \
-           --net locale -d -t ${image}
+       --volume=/var/log/docker-images/pdf-service:/var/log \
+       -e "FAA_PDF_SERVICE_PASS=$FAA_PDF_SERVICE_PASS" \
+       --net locale -d -t ${image}
