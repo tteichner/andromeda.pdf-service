@@ -1,0 +1,63 @@
+swagger: "3.0"
+info:
+  title: FileAccess - Orion API - Pdf service
+  description: API description for the pdf service
+  version: 1.0.0
+host: pdf-service-proxy.teichner.biz
+schemes:
+  - https
+paths:
+  /wkhtml2pdf/:
+    post:
+      summary: Render
+      description: Render a pdf file based on the given html input
+      requestBody:
+        description: Host option
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: An asset data set
+              properties:
+                content:
+                  schema:
+                    type: string
+                    title: A html body to render including all styles and images inline
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            title: The setup response object
+            properties:
+              values:
+                type: object
+                title: The php info object
+                properties:
+                  id:
+                    type: string
+                    title: The given host id
+                    example:
+                      - "file-access"
+                  key:
+                    type: string
+                    title: The automatic generate authk key
+                    example:
+                      - "bbcbb0184f4984ea6562f0b113c24bf6"
+        500:
+          description: Internal Server Error
+          schema:
+            type: string
+            title: The response message for the error case when write failed
+            example:
+              - "system.msg.failed_write_file"
+        400:
+          description: Bad Request
+          schema:
+            type: string
+            title: The response message for invalid data
+            example:
+              - "system.msg.invalid_payload"

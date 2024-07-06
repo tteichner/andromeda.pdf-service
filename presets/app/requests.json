@@ -1,0 +1,9 @@
+[
+    {
+        "regex" : "#^/wkhtml2pdf/$#",
+        "handler" : "Pdf",
+        "function" : "Html2Pdf",
+        "method" : "POST",
+        "protected" : false
+    }
+]

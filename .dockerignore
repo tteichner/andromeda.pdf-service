@@ -1,0 +1,8 @@
+presets/app//vendor/
+presets/app/php-ffmpeg/vendor/
+presets/app/php-ffmpeg/composer.lock
+presets/app/composer.lock
+presets/app/postal-mime/result.json
+presets/app/postal-mime/sample.eml
+presets/app/postal-mime/package-lock.json
+presets/app/postal-mime/node_modules/

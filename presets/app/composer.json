@@ -1,0 +1,7 @@
+{
+  "require" : {
+    "spatie/pdf-to-text": "^1.4"
+  },
+    "name": "file-access/pdf-service",
+    "description": ""
+}
