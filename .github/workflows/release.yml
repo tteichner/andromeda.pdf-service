@@ -7,7 +7,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       SOURCE_TAG: ${{ steps.get-tag.outputs.SOURCE_TAG }}
     steps:
@@ -19,7 +19,7 @@ jobs:
           echo "SOURCE_TAG=$SOURCE_TAG" >> "$GITHUB_OUTPUT"
 
   publish:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: checkout repo
@@ -34,7 +34,7 @@ jobs:
           ./build.sh ${{ env.SOURCE_TAG }}
 
   docs:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs:
       - publish
     steps:
