@@ -45,7 +45,7 @@ jobs:
         uses: actions/create-release@latest
         id: create_release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
           SOURCE_TAG: ${{needs.prepare.outputs.SOURCE_TAG}}
         with:
           tag_name: "p${{ env.SOURCE_TAG }}"
