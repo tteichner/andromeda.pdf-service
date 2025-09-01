@@ -2,7 +2,33 @@
 set -e
 
 # version to start comes from external caller
-git_tag="softwarefactories/pdf-service:$1"
+app='pdf-service'
+version="$1"
+git_tag="softwarefactories/$app:$version"
+green='\e[0;32m'
+red='\e[0;31m'
+endColor='\e[0m'
 
 # build image
 docker build -t "$git_tag" -f Dockerfile .
+
+# publish image to dockerhub, requires login before
+id=$(docker images "$git_tag" -q)
+echo "Tag and release image $app ($id) in version $version"
+docker tag "$id" "$version"
+if [[ $? -eq 0 ]]; then
+    echo -e "[ ${green}OK!${endColor} ]"
+
+    echo "Push to docker hub"
+    docker push "softwarefactories/$app:$version"
+    if [[ $? -eq 0 ]]; then
+        echo -e "[ ${green}OK!${endColor} ]"
+        return 0
+    else
+        echo -e "[ ${red}FAILED!${endColor} ]"
+        return 1
+    fi
+else
+    echo -e "[ ${red}FAILED!${endColor} ]"
+    return 2
+fi
