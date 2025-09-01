@@ -1,0 +1,56 @@
+name: Release docker swarm images
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  prepare:
+    runs-on: self-hosted
+    outputs:
+      SOURCE_TAG: ${{ steps.get-tag.outputs.SOURCE_TAG }}
+    steps:
+      - name: Extract tag name
+        id: get-tag
+        run: |
+          SOURCE_TAG=${GITHUB_REF#refs/tags/v}
+          echo "SOURCE_TAG=$SOURCE_TAG" >> $GITHUB_ENV
+          echo "SOURCE_TAG=$SOURCE_TAG" >> "$GITHUB_OUTPUT"
+
+  publish:
+    runs-on: self-hosted
+    needs: prepare
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Build and publish
+        env:
+          SOURCE_TAG: ${{needs.prepare.outputs.SOURCE_TAG}}
+        run: |
+          chmod a+x ./build.sh
+          ./build.sh ${{ env.SOURCE_TAG }}
+
+  docs:
+    runs-on: self-hosted
+    needs:
+      - publish
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+
+      - name: Publish release
+        uses: actions/create-release@latest
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_TAG: ${{needs.prepare.outputs.SOURCE_TAG}}
+        with:
+          tag_name: "p${{ env.SOURCE_TAG }}"
+          release_name: "Release version ${{ env.SOURCE_TAG }}"
+          body: "Built this release at commit: '${{ github.event.head_commit.message }}'"
+          draft: false
+          prerelease: false
+
