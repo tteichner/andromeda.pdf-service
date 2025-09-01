@@ -23,12 +23,9 @@ if [[ $? -eq 0 ]]; then
     docker push "softwarefactories/$app:$version"
     if [[ $? -eq 0 ]]; then
         echo -e "[ ${green}OK!${endColor} ]"
-        return 0
     else
         echo -e "[ ${red}FAILED!${endColor} ]"
-        return 1
     fi
 else
     echo -e "[ ${red}FAILED!${endColor} ]"
-    return 2
 fi
