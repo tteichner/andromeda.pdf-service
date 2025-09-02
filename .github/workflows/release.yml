@@ -7,7 +7,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       SOURCE_TAG: ${{ steps.get-tag.outputs.SOURCE_TAG }}
     steps:
@@ -19,7 +19,7 @@ jobs:
           echo "SOURCE_TAG=$SOURCE_TAG" >> "$GITHUB_OUTPUT"
 
   publish:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - name: checkout repo
@@ -31,26 +31,20 @@ jobs:
           SOURCE_TAG: ${{needs.prepare.outputs.SOURCE_TAG}}
         run: |
           chmod a+x ./build.sh
+          echo "Source tag ${{ env.SOURCE_TAG }}"
           ./build.sh ${{ env.SOURCE_TAG }}
 
-  docs:
-    runs-on: self-hosted
-    needs:
-      - publish
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v3
-
-      - name: Publish release
-        uses: actions/create-release@latest
+      - uses: actions/create-release@latest
         id: create_release
+        name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_TAG: ${{needs.prepare.outputs.SOURCE_TAG}}
         with:
-          tag_name: "p${{ env.SOURCE_TAG }}"
-          release_name: "Release version ${{ env.SOURCE_TAG }}"
-          body: "Built this release at commit: '${{ github.event.head_commit.message }}'"
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            New release by tag ${{ github.ref }}
           draft: false
           prerelease: false
+
 

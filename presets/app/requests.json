@@ -5,5 +5,12 @@
         "function" : "Html2Pdf",
         "method" : "POST",
         "protected" : false
+    },
+    {
+        "regex" : "#^/api/v1/[a-z9-9.]+/wkhtml2pdf/$#",
+        "handler" : "Pdf",
+        "function" : "Html2Pdf",
+        "method" : "POST",
+        "protected" : false
     }
 ]
