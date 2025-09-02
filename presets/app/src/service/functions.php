@@ -26,10 +26,10 @@ class HttpFunctions extends BaseHttpFunctions
             $info = self::GetHeaderAuth();
             if ($info) {
                 if ($info['login'] === $host && is_file(FAA_PATHS_ROOT_ABS . '/' . $host . '/.pass')) {
-                    // custom password
+                    // custom host specific password
                     $k = trim(file_get_contents(FAA_PATHS_ROOT_ABS . '/' . $host . '/.pass'));
-                    return ($info['password'] === $k);
-                } else if ($info['login'] == 'service' && $info['password'] == FAA_MASTER_PASSWORD) {
+                    return (password_verify($info['password'], $k));
+                } else if ($info['login'] == 'service' && ($info['password'] == FAA_MASTER_PASSWORD || password_verify($info['password'], FAA_MASTER_PASSWORD))) {
                     // global password
                     return true;
                 } else {
