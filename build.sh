@@ -12,10 +12,12 @@ endColor='\e[0m'
 # build image
 docker build -t "$git_tag" -f Dockerfile .
 
-# publish image to dockerhub, requires login before
+# get id of this image
 id=$(docker images "$git_tag" -q)
+
+# publish image to dockerhub, requires login before
 echo "Tag and release image $app ($id) in version $version"
-docker tag "$id" "$version" && docker tag "$id" "latest"
+docker tag "$id" "softwarefactories/$app:latest"
 if [[ $? -eq 0 ]]; then
     echo -e "[ ${green}OK!${endColor} ]"
 
